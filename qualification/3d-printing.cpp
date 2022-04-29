@@ -1,51 +1,38 @@
 #include <algorithm>
 #include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <string>
-#include <utility>
 #include <vector>
 
-#define MAXN 3
+#define P 3
+#define N 4
 #define TGT 1000000
-#define INF 0x3f3f3f3f
 
 using namespace std;
 
-typedef long long ll;
-typedef long double ld;
-
-int c[MAXN], m[MAXN], y[MAXN], k[MAXN];
+int ink[N][P];
 
 int main() {
   int t; scanf("%d\n", &t);
   for(int tc = 1; tc <= t; tc++) {
-    for(int i = 0; i < 3; i++) {
-      scanf("%d %d %d %d\n", &c[i], &m[i], &y[i], &k[i]);
+    for(int i = 0; i < P; i++) {
+      for(int j = 0; j < N; j++) {
+        scanf("%d\n", &ink[j][i]);
+      }
     }
 
-    int minC = *min_element(c, c + 3);
-    int minM = *min_element(m, m + 3);
-    int minY = *min_element(y, y + 3);
-    int minK = *min_element(k, k + 3);
+    int rem = TGT;
+    vector<int> comps;
+    for(int i = 0; i < N; i++) {
+      int comp = min(rem, *min_element(ink[i], ink[i] + P));
+      comps.push_back(comp);
+      rem -= comp;
+    }
 
-    if(minC + minM + minY + minK < TGT) {
+    if(rem > 0) {
       printf("Case #%d: IMPOSSIBLE\n", tc);
     } else {
-      int total = TGT;
-      int tgtC = min(total, minC);
-      total -= tgtC;
-      int tgtM = min(total, minM);
-      total -= tgtM;
-      int tgtY = min(total, minY);
-      total -= tgtY;
-      int tgtK = min(total, minK);
-      total -= tgtK;
-
-      printf("Case #%d: %d %d %d %d\n", tc, tgtC, tgtM, tgtY, tgtK);
+      printf("Case #%d:", tc);
+      for(int i = 0; i < N; i++) printf(" %d", comps[i]);
+      printf("\n");
     }
   }
   return 0;
